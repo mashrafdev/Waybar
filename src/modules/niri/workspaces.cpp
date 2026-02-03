@@ -53,6 +53,7 @@ void Workspaces::doUpdate() {
   }
 
   // Add buttons for new workspaces, update existing ones.
+  const auto hideEmpty = config_["hide-empty"].asBool();
   for (const auto& ws : my_workspaces) {
     auto bit = buttons_.find(ws["id"].asUInt64());
     auto& button = bit == buttons_.end() ? addButton(ws) : bit->second;
@@ -82,7 +83,8 @@ void Workspaces::doUpdate() {
       style_context->remove_class("current_output");
     }
 
-    if (ws["active_window_id"].isNull())
+    const bool isEmpty = ws["active_window_id"].isNull();
+    if (isEmpty)
       style_context->add_class("empty");
     else
       style_context->remove_class("empty");
@@ -111,6 +113,12 @@ void Workspaces::doUpdate() {
     if (config_["current-only"].asBool()) {
       const auto* property = alloutputs ? "is_focused" : "is_active";
       if (ws[property].asBool())
+        button.show();
+      else
+        button.hide();
+    } else if (hideEmpty) {
+      const bool isActive = alloutputs ? ws["is_focused"].asBool() : ws["is_active"].asBool();
+      if (!isEmpty || isActive)
         button.show();
       else
         button.hide();
