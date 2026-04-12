@@ -1,3 +1,6 @@
+> [!WARNING]
+> This repository is archived. The `hide-empty` feature has been merged into the [official Waybar repository](https://github.com/Alexays/Waybar/pull/4966), so this fork is no longer needed.
+
 > [!NOTE]
 > This fork adds a `hide-empty` option to the niri workspaces module,
 > allowing empty workspaces to be hidden from the bar
